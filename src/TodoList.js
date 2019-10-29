@@ -15,6 +15,7 @@ class TodoList extends Component {
   }
 
   render() {
+    console.log('TodoList render');
     return (
       <Fragment>
         <div>
@@ -33,6 +34,32 @@ class TodoList extends Component {
     );
   }
 
+  componentWillMount () {
+    console.log('componentWillMount');
+  }
+  componentDidMount () {
+    console.log('componentDidMount');
+    // ajax 请求
+    fetch('http://codes.me/top250.json')
+      .then(response => response.json())
+      .then(response => {
+        console.log('fetch: top250 ', response);
+      });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    console.log('shouldComponentUpdate');
+    // 必需有返回值： true更新, false不更新
+    return true;
+  }
+  componentWillUpdate () {
+    // shouldComponentUpdate 返回true 才会执行。
+    console.log('componentWillUpdate');
+  }
+  componentDidUpdate () {
+    console.log('componentDidUpdate');
+  }
+
   getTodoItem () {
     return this.state.list.map((item, index) => {
       return (
@@ -47,6 +74,7 @@ class TodoList extends Component {
     // const inputValue = e.target.value;
     // 使用 ref 
     const inputValue = this.input.value;
+    console.log(inputValue);
     // setState 使用回调时，是异步的。要先保存要使用的值。
     this.setState(() => ({
       inputValue
