@@ -6,6 +6,7 @@ class TodoItem extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
+  // 当组件的 state, props 发生改变时, render 函数会重新执行一次。
   render () {
     const { content, test } = this.props;
     return <div onClick={this.handleClick}>{test} - {content}</div>;
