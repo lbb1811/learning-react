@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
+import TestTransition from './TestTransition';
 
 class TodoList extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class TodoList extends Component {
     console.log('TodoList render');
     return (
       <Fragment>
+        <TestTransition />
         <div>
           <label htmlFor="insertArea">输入内容</label>
           <input id="insertArea" className="input" 
