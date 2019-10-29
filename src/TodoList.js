@@ -7,6 +7,10 @@ class TodoList extends Component {
       inputValue: '',
       list: [111,222,333]
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleItemDelete = this.handleItemDelete.bind(this);
   }
 
   render() {
@@ -16,42 +20,42 @@ class TodoList extends Component {
           <label htmlFor="insertArea">输入内容</label>
           <input id="insertArea" className="input" 
             value={this.state.inputValue}
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
           />
-          <button onClick={this.handleButtonClick.bind(this)}>提交</button>
+          <button onClick={this.handleButtonClick}>提交</button>
         </div>
         <ul>
-          {
-            this.state.list.map((item, index) => {
-              return (
-                // <li key={index} onClick={this.handleItemDelete.bind(this, index)}
-                //   // 开启 插入的HTML不转义 (默认会转义，防止xss攻击)
-                //   dangerouslySetInnerHTML={{__html:item}}
-                // ></li>
-                <TodoItem key={index} index={index} content={item}
-                  // 向子组件传递方法时，绑定this值，使其this为父组件的this
-                  deleteItem={this.handleItemDelete.bind(this)}
-                />
-              );
-            })
-          }
+          {this.getTodoItem()}
         </ul>
       </Fragment>
     );
   }
 
-  handleInputChange (e) {
-    this.setState({
-      inputValue: e.target.value
+  getTodoItem () {
+    return this.state.list.map((item, index) => {
+      return (
+        <TodoItem key={index} index={index} content={item}
+          deleteItem={this.handleItemDelete}
+        />
+      );
     });
   }
+
+  handleInputChange (e) {
+    const inputValue = e.target.value;
+    // setState 使用回调时，是异步的。要先保存要使用的值。
+    this.setState(() => ({
+      inputValue
+    }));
+    // this.setState({
+    //   inputValue: e.target.value
+    // });
+  }
   handleButtonClick () {
-    this.setState(state => {
-      return {
-        list: [...state.list, state.inputValue],
-        inputValue: ''
-      };
-    });
+    this.setState(state => ({
+      list: [...state.list, state.inputValue],
+      inputValue: ''
+    }));
   }
   handleItemDelete (index) {
     console.log('index', index);
