@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
-import Test from './Test';
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -22,13 +22,13 @@ class TodoList extends Component {
           <input id="insertArea" className="input" 
             value={this.state.inputValue}
             onChange={this.handleInputChange}
+            ref={input => {this.input = input;}}
           />
           <button onClick={this.handleButtonClick}>提交</button>
         </div>
-        <ul>
+        <ul ref={ul => {this.ul = ul;}}>
           {this.getTodoItem()}
         </ul>
-        <Test content={this.state.inputValue} />
       </Fragment>
     );
   }
@@ -44,7 +44,9 @@ class TodoList extends Component {
   }
 
   handleInputChange (e) {
-    const inputValue = e.target.value;
+    // const inputValue = e.target.value;
+    // 使用 ref 
+    const inputValue = this.input.value;
     // setState 使用回调时，是异步的。要先保存要使用的值。
     this.setState(() => ({
       inputValue
@@ -54,10 +56,13 @@ class TodoList extends Component {
     // });
   }
   handleButtonClick () {
+    if (!this.state.inputValue) return;
     this.setState(state => ({
       list: [...state.list, state.inputValue],
       inputValue: ''
-    }));
+    }), () => {
+      console.log('this.ul div length', this.ul.querySelectorAll('div').length);
+    });
   }
   handleItemDelete (index) {
     console.log('index', index);
