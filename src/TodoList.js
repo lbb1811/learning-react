@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import TodoItem from './TodoItem';
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -24,10 +24,14 @@ class TodoList extends Component {
           {
             this.state.list.map((item, index) => {
               return (
-                <li key={index} onClick={this.handleItemDelete.bind(this, index)}
-                  // 开启 插入的HTML不转义 (默认会转义，防止xss攻击)
-                  dangerouslySetInnerHTML={{__html:item}}
-                ></li>
+                // <li key={index} onClick={this.handleItemDelete.bind(this, index)}
+                //   // 开启 插入的HTML不转义 (默认会转义，防止xss攻击)
+                //   dangerouslySetInnerHTML={{__html:item}}
+                // ></li>
+                <TodoItem key={index} index={index} content={item}
+                  // 向子组件传递方法时，绑定this值，使其this为父组件的this
+                  deleteItem={this.handleItemDelete.bind(this)}
+                />
               );
             })
           }
