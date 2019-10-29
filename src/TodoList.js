@@ -5,7 +5,7 @@ class TodoList extends Component {
     super(props);
     this.state = {
       inputValue: '',
-      list: [111,222,333]
+      list: ['111','222','333', 999]
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
