@@ -1,21 +1,28 @@
+import * as actionTypes from './actionTypes';
+
 const defaultState = {
-  inputValue: '123',
-  list: [111, 222]
+  inputValue: '',
+  list: []
 };
 
 // reducer 可以接收 state数据，但是不去修改 state。把新的 state数据返回给 store。
 export default (state = defaultState, action) => {
-  console.log('store reducer: state, action', state, action);
-  if (action.type === 'change_input_value') {
+  console.log('【store reducer】: \nstate ', state, '\naction ', action);
+  if (action.type === actionTypes.CHANGE_INPUT_VALUE) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.inputValue = action.value;
     return newState;
   }
-  if (action.type === 'add_todo_item') {
+  if (action.type === actionTypes.ADD_TODO_ITEM) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.list.push(newState.inputValue);
     newState.inputValue = '';
     console.log(newState);
+    return newState;
+  }
+  if (action.type === actionTypes.DELETE_TODO_ITEM) {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.list.splice(action.index, 1);
     return newState;
   }
   return state;
