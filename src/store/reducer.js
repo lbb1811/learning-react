@@ -6,6 +6,7 @@ const defaultState = {
 };
 
 // reducer 可以接收 state数据，但是不去修改 state。把新的 state数据返回给 store。
+// reducer 必须是纯函数
 export default (state = defaultState, action) => {
   console.log('【store reducer】: \nstate ', state, '\naction ', action);
   if (action.type === actionTypes.CHANGE_INPUT_VALUE) {

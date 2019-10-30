@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Input, Button, List } from 'antd';
 import store from './store';
-import * as actionTypes from './store/actionTypes';
+// import * as actionTypes from './store/actionTypes';
+import * as actionCreators from './store/actionCreators';
 
 import 'antd/dist/antd.css';
 
@@ -43,10 +44,12 @@ class TodoList extends Component {
   }
 
   handleInputChange (e) {
-    const action = {
-      type: actionTypes.CHANGE_INPUT_VALUE,
-      value: e.target.value
-    };
+    // const action = {
+    //   type: actionTypes.CHANGE_INPUT_VALUE,
+    //   value: e.target.value
+    // };
+    // action 封装到 actionCreators中
+    const action = actionCreators.getInputChangeAction(e.target.value);
     store.dispatch(action);
   }
   handleStoreChange () {
@@ -55,16 +58,18 @@ class TodoList extends Component {
   }
   handleButtonClick () {
     if (!this.state.inputValue) return;
-    const action = {
-      type: actionTypes.ADD_TODO_ITEM
-    };
+    // const action = {
+    //   type: actionTypes.ADD_TODO_ITEM
+    // };
+    const action = actionCreators.getAddItemAction();
     store.dispatch(action);
   }
   handleItemDelete (index) {
-    const action = {
-      type: actionTypes.DELETE_TODO_ITEM,
-      index
-    };
+    // const action = {
+    //   type: actionTypes.DELETE_TODO_ITEM,
+    //   index
+    // };
+    const action = actionCreators.getDeleteItemAction(index);
     store.dispatch(action);
   }
 }
