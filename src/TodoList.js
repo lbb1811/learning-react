@@ -1,69 +1,66 @@
 import React, { Component } from 'react';
-import store from './store';
-import * as actionCreators from './store/actionCreators';
-import TodoListUI from './TodoListUI';
+import { connect } from 'react-redux';
 
-import 'antd/dist/antd.css';
-
-
+// 可以改成无状态组件
 class TodoList extends Component {
-  constructor(props) {
-    super(props);
-    console.log('store', store.getState());
-    this.state = store.getState();
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleItemDelete = this.handleItemDelete.bind(this);
-    this.handleStoreChange = this.handleStoreChange.bind(this);
-    // 订阅store数据改变，更新state内容。
-    store.subscribe(this.handleStoreChange);
-  }
   render () {
+    const {
+      inputValue, list,
+      changeInputValue, handleClick, deleteItem
+    } = this.props;
     return (
-      <TodoListUI 
-        inputValue={this.state.inputValue}
-        list={this.state.list}
-        handleInputChange={this.handleInputChange}
-        handleButtonClick={this.handleButtonClick}
-        handleItemDelete={this.handleItemDelete}
-      />
+      <div>
+        <div>
+          <input value={inputValue}
+            onChange={changeInputValue}
+          />
+          <button onClick={handleClick}>提交</button>
+        </div>
+        <ul>
+          {
+            list.map((item, index) => {
+              return (<li key={index} onClick={() => {deleteItem(index);}}>{item}</li>);
+            })
+          }
+        </ul>
+      </div>
     );
   }
-
-  componentDidMount () {
-    // 模仿 ajax (axios)
-    new Promise((resolve, reject) => {
-      const res = {
-        data: ['hello', 'javascript', 'world'],
-        status: 200
-      };
-      resolve(res.data);
-    })
-      .then(response => {
-        console.log('response', response);
-        const action = actionCreators.initListAction(response);
-        store.dispatch(action);
-      });
-  }
-
-  handleInputChange (e) {
-    // action 封装到 actionCreators中
-    const action = actionCreators.getInputChangeAction(e.target.value);
-    store.dispatch(action);
-  }
-  handleStoreChange () {
-    console.log('store change');
-    this.setState(store.getState());
-  }
-  handleButtonClick () {
-    if (!this.state.inputValue) return;
-    const action = actionCreators.getAddItemAction();
-    store.dispatch(action);
-  }
-  handleItemDelete (index) {
-    const action = actionCreators.getDeleteItemAction(index);
-    store.dispatch(action);
-  }
 }
-export default TodoList;
+
+// 把 store里的数据映射到 props中
+const mapStateToProps = state => {
+  return {
+    inputValue: state.inputValue,
+    list: state.list
+  };
+};
+// 把 store的 dispatch方法挂到 props中
+const mapDispatchToProps = dispatch => {
+  return {
+    changeInputValue (e) {
+      console.log(e.target.value);
+      const action = {
+        type: 'change_input_value',
+        value: e.target.value
+      };
+      dispatch(action);
+    },
+    handleClick () {
+      const action = {
+        type: 'add_item'
+      };
+      dispatch(action);
+    },
+    deleteItem (index) {
+      console.log('delete item', index);
+      const action = {
+        type: 'delete_item',
+        index
+      };
+      dispatch(action);
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
