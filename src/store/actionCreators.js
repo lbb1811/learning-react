@@ -13,3 +13,8 @@ export const getDeleteItemAction = index => ({
   type: actionTypes.DELETE_TODO_ITEM,
   index
 });
+
+export const initListAction = data => ({
+  type: actionTypes.INIT_LIST_ACTION,
+  data
+});
