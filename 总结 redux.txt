@@ -1,0 +1,6 @@
+redux
+  redux-thunk: 增强action, 可以返回一个方法(做逻辑处理).
+  redux-saga: 增加了一个事件处理环节(sagas.js sagaMiddleware.run(mySagas)).
+
+react-redux
+  增加了 store.state, store.dispatch 两映射。
