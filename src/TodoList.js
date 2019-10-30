@@ -33,18 +33,20 @@ class TodoList extends Component {
 
   componentDidMount () {
     // 模仿 ajax (axios)
-    new Promise((resolve, reject) => {
-      const res = {
-        data: ['hello', 'javascript', 'world'],
-        status: 200
-      };
-      resolve(res.data);
-    })
-      .then(response => {
-        console.log('response', response);
-        const action = actionCreators.initListAction(response);
-        store.dispatch(action);
-      });
+    // new Promise((resolve, reject) => {
+    //   const res = {
+    //     data: ['hello', 'javascript', 'world'],
+    //     status: 200
+    //   };
+    //   resolve(res.data);
+    // })
+    //   .then(response => {
+    //     console.log('response', response);
+    //     const action = actionCreators.initListAction(response);
+    //     store.dispatch(action);
+    //   });
+    const action = actionCreators.getInitList();
+    store.dispatch(action);
   }
 
   handleInputChange (e) {

@@ -18,3 +18,7 @@ export const initListAction = data => ({
   type: actionTypes.INIT_LIST_ACTION,
   data
 });
+
+export const getInitList = () =>({
+  type: actionTypes.GET_INIT_LIST
+});
