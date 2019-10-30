@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import './style.css';
 
 class TestTransition extends Component {
@@ -14,7 +15,17 @@ class TestTransition extends Component {
   render () {
     return (
       <Fragment>
-        <div className={this.state.show ? 'show' : 'hide'}>Hellow World</div>
+        <CSSTransition
+          in={this.state.show}
+          timeout={1000}
+          classNames="fade" // 注意 classNames 带 's'
+          unmountOnExit // 动画结束 移除元素
+          onEntered={el => { el.style.color = 'blue'; }}
+          appear={true} // 初次进入时也要动画， 增加 .fade-appear .fade-appear-active 选择器
+        >
+          {/* <div className={this.state.show ? 'show' : 'hide'}>Hello World</div> */}
+          <div>Hello World</div>
+        </CSSTransition>
         <button onClick={this.handleToggle}>Toggle</button>
       </Fragment>
     );
